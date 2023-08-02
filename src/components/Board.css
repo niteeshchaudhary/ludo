@@ -1,0 +1,114 @@
+.board{
+    /* background-image:url(../images/background.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:43.5rem;
+    background-color: "#f00"; */
+    height:44rem;
+    width:45rem;
+    position: relative;
+}
+.holder{
+    position:absolute;
+    top:0;
+    left:0rem;
+    height:44rem;
+    width:45rem;
+}
+
+.rtokenp{
+    background-color: transparent;
+    position:absolute;
+    height:1rem;
+    width:1rem;
+    border: 0.6rem solid transparent;
+    top:4.8rem;
+    left:4.5rem;
+}
+
+.gtokenp{
+    background-color: transparent;
+    position:absolute;
+    height:1rem;
+    width:1rem;
+    border: 0.6rem solid transparent;
+    top:4.4rem;
+    left:31.5rem;
+}
+
+.btokenp{
+    background-color: transparent;
+    position:absolute;
+    height:1rem;
+    width:1rem;
+    border: 0.6rem solid transparent;
+    top:30.5rem;
+    left:4.5rem;
+}
+.ytokenp{
+    background-color: transparent;
+    position:absolute;
+    height:1rem;
+    width:1rem;
+    border: 0.6rem solid transparent;
+    top:30.9rem;
+    left:31.5rem;
+}
+
+
+.rtoken{
+    background-color: red;
+    /* cursor:pointer; */
+    position:absolute;
+    height:2rem;
+    width:1rem;
+    border: 0.6rem solid #000;
+    border-radius: 50%;
+    top:4.8rem;
+    left:4.5rem;
+}
+
+.gtoken{
+    background-color: green;
+    /* cursor:pointer; */
+    position:absolute;
+    height:2rem;
+    width:1rem;
+    border-radius: 50%;
+    border: 0.6rem solid #000;
+    top:4.4rem;
+    left:31.5rem;
+}
+
+.btoken{
+    background-color: blue;
+    /* cursor:pointer; */
+    position:absolute;
+    height:2rem;
+    width:1rem;
+    border-radius: 50%;
+    border: 0.6rem solid #000;
+    top:30.5rem;
+    left:4.5rem;
+}
+.ytoken{
+    background-color: yellow;
+    /* cursor:pointer; */
+    position:absolute;
+    height:2rem;
+    border-radius: 50%;
+    width:1rem;
+    border: 0.6rem solid #000;
+    top:30.9rem;
+    left:31.5rem;
+}
+.block{
+    background-color: rgba(255, 0, 255, 0);
+    color :#ffffff00;
+    position:absolute;
+    height:1rem;
+    width:1rem;
+    border: none;
+    top:18rem;
+    left:0.4rem;
+}
