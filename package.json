@@ -12,11 +12,15 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node scripts/dev.cjs",
+    "serve": "node server/index.mjs --production",
+    "test:server": "node --test server/rooms.test.mjs",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://127.0.0.1:3001",
+  "engines": { "node": ">=22" },
   "eslintConfig": {
     "extends": [
       "react-app",

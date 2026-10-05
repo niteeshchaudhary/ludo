@@ -10,6 +10,7 @@
 
 # production
 /build
+/.local-preview
 
 # misc
 .DS_Store

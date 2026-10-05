@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# Ludo Club
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A rebuilt Ludo game in React. Play with 2–4 players on one screen, computer opponents, or friends on separate devices over your LAN. The default game is you against three computers.
 
-## Available Scripts
+## Run
 
-In the project directory, you can run:
+Requires Node.js 22 or newer.
 
-### `npm start`
+```sh
+npm ci
+npm start
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+`npm start` launches the React app on **0.0.0.0:3000** and its room server on 127.0.0.1:3001. The app proxies room requests, so other devices only need port 3000. The terminal prints available LAN addresses. Open http://localhost:3000 on the host; friends open its Wi-Fi IP address, for example `http://192.168.1.50:3000`, on the same network.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+To set the host explicitly in PowerShell:
 
-### `npm test`
+```powershell
+$env:HOST="0.0.0.0"
+npm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+If Windows prompts about network access, allow Node.js on your private network.
 
-### `npm run build`
+### LAN rooms
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Click **Create / join room**, enter your name, and press **Continue**. Then choose **Create room** or enter a code to **Join room**. Share its six-character code or invite link. Friends join from their own browsers. After 2–4 players join, the host clicks **Start room game**. Each device controls its own color; turns and moves update live. Click the die to roll. A single legal piece moves automatically; multiple choices require clicking a piece.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Dice and legal moves are controlled by the server. Reloading reconnects to your seat on the same browser and address. A temporary disconnection retains your seat; explicitly leaving gives the seat to a computer. Each human turn has a one-minute countdown, including bonus rolls. The server enforces it even if the player disconnects. A timeout forfeits the turn; three total timeouts disqualify that player and remove their pieces. If only one player remains, they win.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Use **Enable autopilot** below your own name to let the bot roll and move. Use **Take control** to resume manual play, including during another player’s turn. Autopilot preserves timeout strikes and the original turn deadline; if you take control after that deadline, the turn times out immediately. Computer-controlled seats do not incur timeouts. In a shared-screen game, each human seat has its own toggle.
 
-### `npm run eject`
+Wins include a brief confetti celebration and trophy animation. After a win, the host can set up another round through **Room details**. Rooms are held in memory and disappear when the server stops. No account is required.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+When creating from localhost, the invite link uses a LAN address. If your computer has multiple network adapters, select the Wi-Fi address in **Network address**. All players should use the same LAN address throughout a game.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+For a production build with one server:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```sh
+npm run build
+npm run serve
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+This serves the app and room API together on **0.0.0.0:3000**. `HOST` and `PORT` can override the defaults.
 
-## Learn More
+## Verify
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```sh
+npm test -- --watchAll=false --runInBand
+npm run test:server
+npm run build
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Tests cover game rules, route geometry, saved-game validation, UI interaction, timer cancellation, and 100 seeded games played through to a winner.
 
-### Code Splitting
+## Playing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Use **New game** to choose player names and local/computer/empty seats. Click the die or **Roll dice** to roll. If exactly one piece can use the roll, it moves automatically; if several can move, select a highlighted piece. Moves hop through each intervening square. Captured pieces wait for the landing, then quickly retrace their route to the yard. Controls wait for movement to finish; reduced-motion preferences skip these animations. Single-device games save in browser local storage and restores pending moves on reload. Opening rules or setup pauses local computer moves; the human turn clock continues. Reloading retains the deadline and timeout strikes. The app works without storage, but that game will not survive closing the tab.
 
-### Analyzing the Bundle Size
+House rules: a six enters a piece; when all four pieces are locked, piece 1 enters automatically; two-player games use opposite corners; exact rolls finish; eight starred squares are safe; unsafe landings capture every opposing piece there. Stacks do not block movement. A six, capture, or finish earns one bonus roll. The third consecutive six forfeits that roll without undoing earlier moves. No available move ends the turn. First to finish all four pieces wins.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Code
 
-### Making a Progressive Web App
+- `src/game/engine.js`: pure reducer, legal moves, route coordinates, computer choices, fair dice, and save validation.
+- `src/components/LudoBoard.js`: responsive SVG board with accessible HTML token buttons.
+- `src/App.js`: game flow, cancellable timers, player setup, saves, rules, and winner flow.
+- `src/App.css`: desktop and mobile presentation with reduced-motion support.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- `server/rooms.mjs`: authoritative LAN rooms, authenticated seats, live events, server dice, and automated turns.
+- `src/game/useRoom.js`: room requests, live synchronization, and seat reconnect.
+- `scripts/dev.cjs`: runs both development services and prints LAN URLs.
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+See [REBUILD_PLAN.md](REBUILD_PLAN.md) for the replacement plan and rule decisions.
